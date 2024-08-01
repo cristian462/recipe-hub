@@ -2,12 +2,22 @@ import validator from 'validator';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserModel } from "../models/user.model.js";
+import fs from 'fs'
+import path from 'path'
 
 const register = async(req, res)=>{
     try{
-        const {nombre, email, pass, foto} = req.body
+
+        if (req.fileValidationError) {
+            if (foto) fs.unlinkSync(path.join('uploads', foto));
+            return res.status(400).json({ ok: false, msg: req.fileValidationError });
+        }
+
+        const {nombre, email, pass} = req.body
+        const foto = req.file ? req.file.filename : null
 
         if (!nombre || nombre.length < 2 || nombre.length > 30) {
+            if (foto) fs.unlinkSync(path.join('uploads', foto));
             return res.status(400).json({
               ok: false,
               msg: 'Invalid Name'
@@ -15,6 +25,7 @@ const register = async(req, res)=>{
           }
 
         if(!validator.isEmail(email)){
+            if (foto) fs.unlinkSync(path.join('uploads', foto));
             return res.status(500).json({
                 ok: false,
                 msg: 'Invalid Mail'
@@ -23,10 +34,12 @@ const register = async(req, res)=>{
 
         const user = await UserModel.findOneByEmail(email)
         if(user){
+            if (foto) fs.unlinkSync(path.join('uploads', foto));
             return res.status(409).json({ ok:false, msg: 'Email already exists' })
         }
 
         if (!pass || pass.length < 8 || pass.length > 16 || !/[A-Z]/.test(pass) || !/[a-z]/.test(pass) || !/[0-9]/.test(pass)) {
+            if (foto) fs.unlinkSync(path.join('uploads', foto));
             return res.status(400).json({
               ok: false,
               msg: 'Invalid Password'
@@ -46,6 +59,7 @@ const register = async(req, res)=>{
 
         return res.status(201).json({ ok: true, msg: token })
     }catch (error){
+        if (foto) fs.unlinkSync(path.join('uploads', foto));
         console.log(error);
         return res.status(500).json({
             ok: false,
