@@ -120,6 +120,7 @@ const login = async(req, res)=>{
     }
 }
 
+// Falta terminarla para que aparezcan todas las recetas que ha creado el propio usuario
 const profile = async(req, res) =>{
     try{
 

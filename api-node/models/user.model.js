@@ -11,7 +11,7 @@ const create = async ({ nombre, email, pass, foto }) => {
 
 const findOneByEmail = async (email) => {
     const [rows] = await db.query(`
-        SELECT nombre, email, foto,created_at FROM user
+        SELECT nombre, email, foto, created_at FROM user
         WHERE email = ?
     `, [email]);
 
