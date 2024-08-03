@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 4000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",

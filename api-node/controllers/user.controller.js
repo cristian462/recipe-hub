@@ -8,6 +8,9 @@ import path from 'path'
 const register = async(req, res)=>{
     try{
 
+        console.log(req.body);
+
+
         if (req.fileValidationError) {
             if (foto) fs.unlinkSync(path.join('uploads', foto));
             return res.status(400).json({ ok: false, msg: req.fileValidationError });
